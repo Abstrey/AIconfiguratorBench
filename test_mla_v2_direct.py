@@ -19,7 +19,8 @@ def benchmark_mla_v2(batch=1, seq_len=128, num_heads=128,
 
     # BNSD_NBSD layout constraints
     # q: [batch, num_heads, seq_len=1, dimension]
-    q_nope = torch.randn(batch, num_heads, 1, qk_nope_head_dim, dtype=dtype, device=device).contiguous()
+    # In MLA, the Query nope part must be projected to kv_lora_rank (512)
+    q_nope = torch.randn(batch, num_heads, 1, kv_lora_rank, dtype=dtype, device=device).contiguous()
     q_pe = torch.randn(batch, num_heads, 1, qk_rope_head_dim, dtype=dtype, device=device)
     
     # Cache blocks
